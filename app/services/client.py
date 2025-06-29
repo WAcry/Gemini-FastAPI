@@ -92,6 +92,8 @@ class GeminiClientWrapper(GeminiClient):
         # Left with the last message as the assistant's response
         conversation.append(add_tag("assistant", "", unclose=True))
 
+        if any("<" in part and ">" in part for part in conversation):
+            conversation.append("For any xml block, e.g. tool call, always wrap it by: \n`````xml\n...\n`````\n")
         return "\n".join(conversation), files
 
     @staticmethod
